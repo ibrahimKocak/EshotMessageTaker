@@ -5,31 +5,67 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
+    android:background="@color/color0"
     android:orientation="vertical">
 
-    <Spinner
-        android:id="@+id/spinnerDate"
+    <LinearLayout
+        android:weightSum="3"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </Spinner>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <Spinner
-        android:id="@+id/spinnerType"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <Spinner
+                android:id="@+id/spinnerDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    </Spinner>
+            </Spinner>
+        </LinearLayout>
 
-    <Spinner
-        android:id="@+id/spinnerSubject"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </Spinner>
+            <Spinner
+                android:id="@+id/spinnerType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </Spinner>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Spinner
+                android:id="@+id/spinnerSubject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </Spinner>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+
+
+
 
     <ListView
         android:id="@+id/lvMsg"
+        android:layout_margin="4dp"
+        android:background="@color/color2"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

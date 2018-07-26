@@ -2,6 +2,7 @@
     <string name="app_name">EshotMessageTaker</string>
 
     <string-array name="listType">
+        <item>Tümü</item>
         <item>Öneri</item>
         <item>İstek</item>
         <item>Memnuniyet</item>

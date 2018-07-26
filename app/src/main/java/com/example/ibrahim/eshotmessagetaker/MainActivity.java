@@ -34,13 +34,13 @@ public class MainActivity extends Activity {
 
     private final DatabaseReference messages = FirebaseDatabase.getInstance().getReference("Messages");
     private DatabaseReference ref;
-    private ValueEventListener listenerDb;
+    private ValueEventListener listenerDbDate, listenerDbType;
     private ArrayAdapter adapterType, adapterSubject;
-    private ArrayAdapter<String> adapterList;
+    private ArrayAdapter adapterList;
     private AdapterView.OnItemSelectedListener listenerSpinners;
     private HashMap<String, HashMap<String, HashMap<String, HashMap<String, HashMap<String, String>>>>> mapMsgType;
     private HashMap<String, HashMap<String, String>> mapMsgType2;
-    private Spinner spinnerType,spinnerSubject;
+    private Spinner spinnerDate, spinnerType,spinnerSubject;
     private ListView listView;
     private ArrayList list;
 
@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
         mapMsgType = new HashMap<>();
         list = new ArrayList();
 
+        spinnerDate = findViewById(R.id.spinnerDate);
         spinnerType = findViewById(R.id.spinnerType);
         spinnerSubject = findViewById(R.id.spinnerSubject);
         listView = findViewById(R.id.lvMsg);
@@ -96,16 +97,10 @@ public class MainActivity extends Activity {
 
             s = "\t\t\t\t";
             s += map2.get("Message") + "\n\n\n";
-            s += "\t\t\t\t\t\t\t\tLocal\t\t\t\t" + "\t\t\t\t\t\t\t\t\t\t\t\tDatabase\n\t\t\t\t";
-            s += map2.get("Local Date") + "\t\t\t\t\t\t\t\t" + String.valueOf(map2.get("Server Timestamp"));
+            s += "\t\t\t\t\t\t\tLocal Date\t\t\t\t" + "\t\t\t\t\t\t\t\tDatabase Date\n\t\t\t\t";
+            //s += map2.get("Local Date") + "\t\t\t\t\t\t\t\t" + String.valueOf(map2.get("Server Timestamp"));
+            s += map2.get("Local Date") + "\t\t\t\t\t\t\t\t" + getLocalDate(true, String.valueOf(map2.get("Server Timestamp")));
 
-
-/*
-            s = "\n\t\t";
-            s += map2.get("Message") + "\n\n\n";
-            s += "Server Timestamp = " + String.valueOf(map2.get("Server Timestamp"));
-            s += " Local Date = " + map2.get("Local Date") + "\n";
-*/
             list.add(s);
         }
 
@@ -114,18 +109,33 @@ public class MainActivity extends Activity {
 
     private void initListener() {
 
-        listenerDb = new ValueEventListener() {
+        listenerDbType = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                //if(dataSnapshot.getValue() != null) {
-                    HashMap<String, HashMap<String, String>> map = new HashMap<>();
+                HashMap<String, HashMap<String, String>> map = (HashMap<String, HashMap<String, String>>) dataSnapshot.getValue();
+                updateList(map);
 
-                    map = (HashMap<String, HashMap<String, String>>) dataSnapshot.getValue();
+            }
 
-                    updateList(map);
-                //}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
+            }
+        };
+
+        listenerDbDate = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                HashMap<String, HashMap<String, String>> map = new HashMap<>();
+
+                for (DataSnapshot child : dataSnapshot.getChildren()){
+                    if(child.child(spinnerSubject.getSelectedItem().toString()).getValue() != null)
+                    map.putAll((HashMap<String, HashMap<String, String>>) child.child(spinnerSubject.getSelectedItem().toString()).getValue());
+                }
+
+                updateList(map);
             }
 
             @Override
@@ -138,8 +148,16 @@ public class MainActivity extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                ref = messages.child(getLocalDate(false)).child(spinnerType.getSelectedItem().toString()).child(spinnerSubject.getSelectedItem().toString());
-                ref.addValueEventListener(listenerDb);
+                if(spinnerType.getSelectedItem().toString().equals("Tümü")){
+
+                    ref = messages.child(getLocalDate(false, null));
+                    ref.addValueEventListener(listenerDbDate);
+                }
+                else{
+                    ref = messages.child(getLocalDate(false, null)).child(spinnerType.getSelectedItem().toString()).child(spinnerSubject.getSelectedItem().toString());
+                    ref.addValueEventListener(listenerDbType);
+                    //ref.orderByChild("Server Tşmestamp").addValueEventListener(listenerDb);
+                }
             }
 
             @Override
@@ -149,7 +167,7 @@ public class MainActivity extends Activity {
         };
     }
 
-    public String getLocalDate(boolean type) {
+    public String getLocalDate(boolean type, String timestamp) {
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf;
@@ -159,7 +177,13 @@ public class MainActivity extends Activity {
         else
             sdf = new SimpleDateFormat("dd-MM-yyyy");
 
-        return sdf.format(c.getTime());
+        if(timestamp == null)
+            return String.valueOf(sdf.format(c.getTime()));
+        else{
+            c.setTimeInMillis(Long.valueOf(timestamp));
+            return String.valueOf(sdf.format(c.getTime()));
+        }
+
     }
 
 }
