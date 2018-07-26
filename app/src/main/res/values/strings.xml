@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">EshotMessageTaker</string>
+
+    <string-array name="listType">
+        <item>Öneri</item>
+        <item>İstek</item>
+        <item>Memnuniyet</item>
+        <item>Şikayet</item>
+        <item>Diğer</item>
+    </string-array>
+
+    <string-array name="listSubject">
+        <item>Hat ve Sefer Saatleri</item>
+        <item>Duraklar</item>
+        <item>Otobüs</item>
+        <item>Personel</item>
+        <item>İzmirim Kart</item>
+    </string-array>
+</resources>
