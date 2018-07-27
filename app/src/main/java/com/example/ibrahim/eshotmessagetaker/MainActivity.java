@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 
 import com.google.firebase.database.DataSnapshot;
@@ -18,7 +17,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashMap;
 
 public class MainActivity extends Activity {
@@ -34,22 +32,21 @@ public class MainActivity extends Activity {
 
     private final DatabaseReference messages = FirebaseDatabase.getInstance().getReference("Messages");
     private DatabaseReference ref;
-    private ValueEventListener listenerDbDate, listenerDbType;
-    private ArrayAdapter adapterType, adapterSubject;
+    private ValueEventListener listenerDb, listenerDbDate, listenerDbType, listenerDbSubject;
+    private ArrayAdapter adapterDate, adapterType, adapterSubject;
     private ArrayAdapter adapterList;
     private AdapterView.OnItemSelectedListener listenerSpinners;
-    private HashMap<String, HashMap<String, HashMap<String, HashMap<String, HashMap<String, String>>>>> mapMsgType;
-    private HashMap<String, HashMap<String, String>> mapMsgType2;
+    private HashMap<String, HashMap<String, String>> map;
     private Spinner spinnerDate, spinnerType,spinnerSubject;
     private ListView listView;
-    private ArrayList list;
+    private ArrayList<String> list;
 
     private void init() {
 
-        mapMsgType = new HashMap<>();
+        map = new HashMap<>();
         list = new ArrayList();
 
-        spinnerDate = findViewById(R.id.spinnerDate);
+        spinnerDate = findViewById(R.id.spinnerDateDay);
         spinnerType = findViewById(R.id.spinnerType);
         spinnerSubject = findViewById(R.id.spinnerSubject);
         listView = findViewById(R.id.lvMsg);
@@ -70,7 +67,6 @@ public class MainActivity extends Activity {
 
         spinnerType.setAdapter(adapterType);
         spinnerSubject.setAdapter(adapterSubject);
-        //listView.setAdapter(adapterList);
     }
 
     private void initAdapters() {
@@ -89,9 +85,7 @@ public class MainActivity extends Activity {
     //ListView'deki listenin spinner secimine gore atanma islemi
     private void updateList(HashMap<String, HashMap<String, String>> map) {
 
-        list.clear();
         String s;
-
         if(map != null)
         for ( HashMap<String, String> map2: map.values()) {
 
@@ -103,43 +97,24 @@ public class MainActivity extends Activity {
 
             list.add(s);
         }
-
-        listView.setAdapter(adapterList);
     }
 
+    int spinnerCount = 0;
     private void initListener() {
 
-        listenerDbType = new ValueEventListener() {
+        listenerSpinners = new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                HashMap<String, HashMap<String, String>> map = (HashMap<String, HashMap<String, String>>) dataSnapshot.getValue();
-                updateList(map);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-
-        listenerDbDate = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                HashMap<String, HashMap<String, String>> map = new HashMap<>();
-
-                for (DataSnapshot child : dataSnapshot.getChildren()){
-                    if(child.child(spinnerSubject.getSelectedItem().toString()).getValue() != null)
-                    map.putAll((HashMap<String, HashMap<String, String>>) child.child(spinnerSubject.getSelectedItem().toString()).getValue());
+                if(spinnerCount != 0) {
+                    list.clear();
+                    downloadData("27-07-2018", spinnerType.getSelectedItem().toString(), spinnerSubject.getSelectedItem().toString());
                 }
-
-                updateList(map);
+                spinnerCount++;
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         };
@@ -148,16 +123,11 @@ public class MainActivity extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                if(spinnerType.getSelectedItem().toString().equals("Tümü")){
-
-                    ref = messages.child(getLocalDate(false, null));
-                    ref.addValueEventListener(listenerDbDate);
+                if(spinnerCount != 0) {
+                    list.clear();
+                    downloadData("27-07-2018", spinnerType.getSelectedItem().toString(), spinnerSubject.getSelectedItem().toString());
                 }
-                else{
-                    ref = messages.child(getLocalDate(false, null)).child(spinnerType.getSelectedItem().toString()).child(spinnerSubject.getSelectedItem().toString());
-                    ref.addValueEventListener(listenerDbType);
-                    //ref.orderByChild("Server Tşmestamp").addValueEventListener(listenerDb);
-                }
+                spinnerCount++;
             }
 
             @Override
@@ -165,6 +135,58 @@ public class MainActivity extends Activity {
 
             }
         };
+
+        listenerDb = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                HashMap<String, HashMap<String, String>> map = (HashMap<String, HashMap<String, String>>) dataSnapshot.getValue();
+                updateList(map);
+
+                listView.setAdapter(adapterList);
+                //ref.removeEventListener(listenerDb);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+    }
+
+    private void downloadData(String date, String type, String subject) {
+
+        if(date.equals("Tümü")){
+
+            downloadData("27-07-2018",type,subject);    //doldur
+        }
+        else{
+
+            if(type.equals("Tümü")){
+
+                downloadData(date,"Öneri",subject);     //doldur
+                downloadData(date,"İstek",subject);     //doldur
+                downloadData(date,"Memnuniyet",subject);     //doldur
+                downloadData(date,"Şikayet",subject);     //doldur
+                downloadData(date,"Diğer",subject);     //doldur
+            }
+            else{
+
+                if(subject.equals("Tümü")){
+
+                    downloadData(date,type,"Hat ve Sefer Saatleri");    //doldur
+                    downloadData(date,type,"Duraklar");    //doldur
+                    downloadData(date,type,"Otobüs");    //doldur
+                    downloadData(date,type,"Personel");    //doldur
+                    downloadData(date,type,"İzmirim Kart");    //doldur
+                }
+                else{
+                    ref = messages.child(date).child(type).child(subject);
+                    ref.addValueEventListener(listenerDb);
+                }
+            }
+        }
+
     }
 
     public String getLocalDate(boolean type, String timestamp) {
@@ -183,7 +205,5 @@ public class MainActivity extends Activity {
             c.setTimeInMillis(Long.valueOf(timestamp));
             return String.valueOf(sdf.format(c.getTime()));
         }
-
     }
-
 }
