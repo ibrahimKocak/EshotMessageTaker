@@ -12,7 +12,7 @@
 
     <string-array name="listSubject">
         <item>Tümü</item>
-        <item>Hat ve Sefer Saatleri</item>
+        <item>Hat ve Sefer</item>
         <item>Duraklar</item>
         <item>Otobüs</item>
         <item>Personel</item>

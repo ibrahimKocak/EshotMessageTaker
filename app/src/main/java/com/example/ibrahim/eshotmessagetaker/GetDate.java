@@ -1,17 +1,19 @@
 package com.example.ibrahim.eshotmessagetaker;
 
+import android.annotation.SuppressLint;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class GetDate {
 
-    private static Calendar calendar;
+    private static Calendar calendarToday;
     private static SimpleDateFormat sdf;
 
-
+    @SuppressLint("SimpleDateFormat")
     public static String getDate(boolean withClock, String timestamp) {
 
-        calendar = Calendar.getInstance();
+        calendarToday = Calendar.getInstance();
 
         if(withClock)
             sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
@@ -19,8 +21,8 @@ public class GetDate {
             sdf = new SimpleDateFormat("dd-MM-yyyy");
 
         if(timestamp != null)
-            calendar.setTimeInMillis(Long.valueOf(timestamp));
+            calendarToday.setTimeInMillis(Long.valueOf(timestamp));
 
-        return String.valueOf(sdf.format(calendar.getTime()));
+        return String.valueOf(sdf.format(calendarToday.getTime()));
     }
 }
