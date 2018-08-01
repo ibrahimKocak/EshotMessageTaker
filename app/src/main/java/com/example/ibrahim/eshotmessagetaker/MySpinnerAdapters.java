@@ -38,10 +38,10 @@ public class MySpinnerAdapters {
     public void setYears(int yearMax) {
 
         year = yearMax;
-        years = new String[year - 2014];
+        years = new String[year - 2017];
 
-        for(int i=0; i<year-2014; i++)
-            years[year-2015 - i] = String.valueOf(2015 + i);
+        for(int i=0; i<year-2017; i++)
+            years[year-2018 - i] = String.valueOf(2018 + i);
 
         setAdapterDateYear();
 
