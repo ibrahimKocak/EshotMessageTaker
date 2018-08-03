@@ -1,51 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
 
-    <color name="colorw">#FFFFFF</color>
-    <color name="color0">#ffa789</color>
-    <color name="color1">#ffd6bf</color>
-    <color name="color2">#f2e2cd</color>
-    <color name="color3">#317873</color>
-    <color name="color4">#49796b</color>
-    <color name="color5">#eec1ad</color>
-    <color name="color6">#83ae9b</color>
-    <color name="color7">#363636</color>
-    <color name="color8">#2a363b</color>
-    <color name="color9">#57a3bd</color>
-    <color name="color10">#99bbbb</color>
-    <color name="color11">#ff0033</color>
-    <color name="color12">#31276f</color>
-    <color name="color13">#2c3571</color>
-    <color name="color14">#282c4b</color>
-    <color name="color15">#800080</color>
-    <color name="color16">#36266d</color>
-    <color name="color17">#9bb1ff</color>
-    <color name="color18">#ff1493</color>
-    <color name="color19">#00ff7f</color>
-    <color name="color20">#00abe0</color>
-    <color name="color21">#0080b3</color>
-    <color name="color22">#ffe99b</color>
-    <color name="color23">#9bb1ff</color>
-    <color name="color24">#e99790</color>
-    <color name="color25">#ffff00</color>
-    <color name="color26">#33ccff</color>
-    <color name="color27">#0066ff</color>
-    <color name="color28">#ff6600</color>
-    <color name="color29">#ff0033</color>
-    <color name="color30">#993333</color>
-    <color name="color31">#663399</color>
-    <color name="color32">#006666</color>
-    <color name="color33">#00cc66</color>
-    <color name="color34">#0099ff</color>
-    <color name="color35">#9999ff</color>
-    <color name="color36">#ffff66</color>
-    <color name="color37">#ff6633</color>
-    <color name="color38">#ff0066</color>
-    <color name="color39">#33ffcc</color>
-    <color name="color40">#00ccff</color>
-    <color name="color41">#ff6699</color>
+    <color name="colorBackground">#FF1F1F1F</color>
+    <color name="colorMessage">#C8FFFFFF</color>
+    <color name="colorListener">#EAF2F8</color>
+    <color name="colorListenerBackground">#CCFFFFFF</color>
+    <color name="colorTemp">#FFFFFF</color>
 
 </resources>

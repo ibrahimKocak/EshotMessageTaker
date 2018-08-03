@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EshotMessageTaker</string>
+    <string name="app_name"></string>
 
     <string-array name="listType">
         <item>Tümü</item>

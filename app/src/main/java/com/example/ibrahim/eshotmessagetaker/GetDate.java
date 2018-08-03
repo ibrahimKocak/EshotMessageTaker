@@ -18,7 +18,7 @@ public class GetDate {
         if(withClock)
             sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
         else
-            sdf = new SimpleDateFormat("dd-MM-yyyy");
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         if(timestamp != null)
             calendarToday.setTimeInMillis(Long.valueOf(timestamp));

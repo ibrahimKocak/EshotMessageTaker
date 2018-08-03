@@ -1,9 +1,9 @@
 package com.example.ibrahim.eshotmessagetaker;
 
 import android.app.Activity;
-import android.os.Build;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,13 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
 public class MainActivity extends Activity {
@@ -98,9 +92,8 @@ public class MainActivity extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                String date = spinnerDateDay.getSelectedItem().toString() + "-" + spinnerDateMonth.getSelectedItem().toString() + "-" + spinnerDateYear.getSelectedItem().toString();
-
                 connection();
+                String date = spinnerDateYear.getSelectedItem().toString() + "-" + spinnerDateMonth.getSelectedItem().toString() + "-" + spinnerDateDay.getSelectedItem().toString();
 
                 if(ref != null)
                     ref.removeEventListener(listenerDb);
@@ -146,6 +139,7 @@ public class MainActivity extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
+                connection();
                 if(map != null) {
 
                     list = GetMessageList.getList(spinnerType.getSelectedItem().toString(), spinnerSubject.getSelectedItem().toString());
@@ -191,10 +185,11 @@ public class MainActivity extends Activity {
 
     private void connection(){
 
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        if(cm.getActiveNetworkInfo() == null) {
+            Toast.makeText(MainActivity.this, "İnternet Yok!", Toast.LENGTH_SHORT).show();
 
-//            Toast.makeText(MainActivity.this,"Ağ var",Toast.LENGTH_SHORT).show();
-//            Toast.makeText(MainActivity.this,"Ağ hatası",Toast.LENGTH_SHORT).show();
-
+        }
     }
 }

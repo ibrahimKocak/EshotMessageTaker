@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/color0"
+    android:background="@drawable/eshotbackground"
     android:orientation="vertical">
 
     <LinearLayout
@@ -25,6 +25,7 @@
             <Spinner
                 android:layout_weight="1"
                 android:id="@+id/spinnerType"
+                android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:ignore="NestedWeights">
@@ -33,6 +34,7 @@
             <Spinner
                 android:layout_weight="1"
                 android:id="@+id/spinnerSubject"
+                android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             </Spinner>
@@ -69,13 +71,20 @@
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/lvMsg"
-        android:layout_margin="4dp"
-        android:background="@color/color2"
+    <LinearLayout
+        android:background="@color/colorListenerBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </ListView>
+        <ListView
+            android:id="@+id/lvMsg"
+            android:layout_margin="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+
+    </LinearLayout>
+
 
 </LinearLayout>

@@ -81,35 +81,35 @@ public class MySpinnerAdapters {
     }
 
     //Adapters
-    public void setAdapterDateYear() {
+    private void setAdapterDateYear() {
 
         adapterDateYear = new ArrayAdapter<>(context,
                 android.R.layout.simple_spinner_item, years);
         adapterDateYear.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 
-    public void setAdapterDateMonth() {
+    private void setAdapterDateMonth() {
 
         adapterDateMonth = new ArrayAdapter<>(context,
                 android.R.layout.simple_spinner_item, months);
         adapterDateMonth.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 
-    public void setAdapterDateDay() {
+    private void setAdapterDateDay() {
 
         adapterDateDay = new ArrayAdapter<>(context,
                 android.R.layout.simple_spinner_item, days);
         adapterDateDay.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 
-    public void setAdapterType() {
+    private void setAdapterType() {
 
         adapterType = ArrayAdapter.createFromResource(context,
                 R.array.listType, android.R.layout.simple_spinner_item);
         adapterType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 
-    public void setAdapterSubject() {
+    private void setAdapterSubject() {
 
         adapterSubject = ArrayAdapter.createFromResource(context,
                 R.array.listSubject, android.R.layout.simple_spinner_item);
@@ -117,17 +117,6 @@ public class MySpinnerAdapters {
     }
 
     //Get Methots
-
-    //Arrays
-    public String[] getYears() {
-        return years;
-    }
-    public String[] getMonths() {
-        return months;
-    }
-    public String[] getDays() {
-        return days;
-    }
 
     //Adapters
 

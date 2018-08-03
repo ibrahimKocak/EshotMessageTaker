@@ -25,31 +25,32 @@ public class GetMessageList {
 
             for (String s : types)
                 if(map.get(s) != null)
-                    solveBySubject(map.get(s),subject);
+                    solveBySubject(s, map.get(s),subject);
         }
         else if(map.get(type) != null)
-            solveBySubject(map.get(type),subject);     //doldur
+            solveBySubject(type, map.get(type),subject);     //doldur
     }
 
 
-    private static void solveBySubject(HashMap<String, HashMap<String, HashMap<String, String>>> map, String subject) {
+    private static void solveBySubject(String type, HashMap<String, HashMap<String, HashMap<String, String>>> map, String subject) {
 
         if(subject.equals("Tümü")){
 
             for (String s : subjects)
                 if(map.get(s) != null)
-                    addToList(map.get(s));
+                    addToList(type, s, map.get(s));
         }
         else if(map.get(subject) != null)
-            addToList(map.get(subject));
+            addToList(type, subject, map.get(subject));
     }
 
-    private static void addToList(HashMap<String, HashMap<String, String>> mapSubject){
+    private static void addToList(String type, String subject, HashMap<String, HashMap<String, String>> mapSubject){
 
         for (HashMap<String, String> mapTemp : mapSubject.values()) {
 
-            String s = "\t\t\t\t";
-            s += mapTemp.get("Message") + "\n\n\n";
+            String s = type + "\t\t / \t\t" + subject + "\n\n\n";
+            s += "\t\t\t\t";
+            s += mapTemp.get("Message") + "\n\n";
             s += "\t\t\t\t\t\t\tLocal Date\t\t\t\t" + "\t\t\t\t\t\t\t\tDatabase Date\n\t\t\t\t";
             s += mapTemp.get("Local Date") + "\t\t\t\t\t\t\t\t" + GetDate.getDate(true, String.valueOf(mapTemp.get("Server Timestamp")));
 
