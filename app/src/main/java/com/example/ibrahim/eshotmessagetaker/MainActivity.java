@@ -1,14 +1,18 @@
 package com.example.ibrahim.eshotmessagetaker;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -27,23 +31,27 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+
         init();
     }
 
     private final DatabaseReference messages = FirebaseDatabase.getInstance().getReference("Messages");
     private DatabaseReference ref;
     private ValueEventListener listenerDb;
-    private ArrayAdapter adapterList;
+    private ArrayAdapter<String> adapterList;
     private AdapterView.OnItemSelectedListener listenerSpinners, listenerSpinnerDateDay, listenerSpinnerDateMonth, listenerSpinnerDateYear;
-    private HashMap<String, HashMap<String, HashMap<String, HashMap<String, String>>>>  map;
+    private AdapterView.OnItemClickListener listenerListview;
+    private HashMap<String, HashMap<String, HashMap<String, HashMap<String, HashMap<String, HashMap<String, String >>>>>>  map;
     private Spinner spinnerDateDay, spinnerDateMonth, spinnerDateYear, spinnerType,spinnerSubject;
     private ListView listView;
-    private ArrayList list;
+    private ArrayList<ArrayList<String>> list;
 
     private void init() {
 
         map = new HashMap<>();
-        list = new ArrayList();
+        list = new ArrayList<>();
 
         spinnerDateDay = findViewById(R.id.spinnerDateDay);
         spinnerDateMonth = findViewById(R.id.spinnerDateMonth);
@@ -52,7 +60,6 @@ public class MainActivity extends Activity {
         spinnerSubject = findViewById(R.id.spinnerSubject);
         listView = findViewById(R.id.lvMsg);
 
-        initAdapters();
         setAdapters();
         initListener();
 
@@ -64,14 +71,9 @@ public class MainActivity extends Activity {
 
     private MySpinnerAdapters mySpinnerAdapters;
 
-    private void initAdapters() {
-
-        mySpinnerAdapters = new MySpinnerAdapters(MainActivity.this);
-        adapterList = new  ArrayAdapter<>(this,R.layout.mytextview,list);
-    }
-
     private void setAdapters() {
 
+        mySpinnerAdapters = new MySpinnerAdapters(MainActivity.this);
         spinnerDateYear.setAdapter(mySpinnerAdapters.getAdapterDateYear());
         spinnerType.setAdapter(mySpinnerAdapters.getAdapterType());
         spinnerSubject.setAdapter(mySpinnerAdapters.getAdapterSubject());
@@ -84,6 +86,7 @@ public class MainActivity extends Activity {
         spinnerDateYear.setOnItemSelectedListener(listenerSpinnerDateYear);
         spinnerType.setOnItemSelectedListener(listenerSpinners);
         spinnerSubject.setOnItemSelectedListener(listenerSpinners);
+        listView.setOnItemClickListener(listenerListview);
     }
 
     private void initListener() {
@@ -143,7 +146,7 @@ public class MainActivity extends Activity {
                 if(map != null) {
 
                     list = GetMessageList.getList(spinnerType.getSelectedItem().toString(), spinnerSubject.getSelectedItem().toString());
-                    adapterList = new  ArrayAdapter<>(MainActivity.this,R.layout.mytextview,list);
+                    adapterList = new  ArrayAdapter<>(MainActivity.this,R.layout.mytextview,list.get(1));
                     listView.setAdapter(adapterList);
                 }
             }
@@ -154,23 +157,40 @@ public class MainActivity extends Activity {
             }
         };
 
+        listenerListview = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                connection();
+
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+                View mView = getLayoutInflater().inflate(R.layout.dialog, null);
+                final TextView tvDialog = mView.findViewById(R.id.tvDialog);
+                tvDialog.setText(list.get(0).get(i));
+                mBuilder.setView(mView);
+                final AlertDialog dialog = mBuilder.create();
+                dialog.show();
+            }
+        };
+
         listenerDb = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                map = (HashMap<String, HashMap<String,HashMap<String,HashMap<String,String>>>>) dataSnapshot.getValue();
+                map = (HashMap<String, HashMap<String,HashMap<String,HashMap<String,HashMap<String,HashMap<String,String>>>>>>) dataSnapshot.getValue();
 
                 if(map != null) {
 
                     GetMessageList.setMap(map);
                     list = GetMessageList.getList(spinnerType.getSelectedItem().toString(), spinnerSubject.getSelectedItem().toString());
-                    adapterList = new ArrayAdapter<>(MainActivity.this, R.layout.mytextview, list);
+                    adapterList = new ArrayAdapter<>(MainActivity.this, R.layout.mytextview, list.get(1));
                     listView.setAdapter(adapterList);
                 }
                 else{
 
-                    list.clear();
-                    adapterList = new ArrayAdapter<>(MainActivity.this, R.layout.mytextview, list);
+                    list.get(0).clear();
+                    list.get(1).clear();
+                    adapterList = new ArrayAdapter<>(MainActivity.this, R.layout.mytextview, list.get(1));
                     listView.setAdapter(adapterList);
                 }
             }
@@ -188,8 +208,8 @@ public class MainActivity extends Activity {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         if(cm.getActiveNetworkInfo() == null) {
-            Toast.makeText(MainActivity.this, "İnternet Yok!", Toast.LENGTH_SHORT).show();
 
+            Toast.makeText(MainActivity.this, "İnternet Yok!", Toast.LENGTH_SHORT).show();
         }
     }
 }

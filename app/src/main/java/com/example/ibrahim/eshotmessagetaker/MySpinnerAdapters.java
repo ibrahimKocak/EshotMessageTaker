@@ -31,7 +31,6 @@ public class MySpinnerAdapters {
         setYears(yearNow);
     }
 
-
     //Set Methots
 
     //Arrays

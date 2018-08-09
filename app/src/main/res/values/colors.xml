@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorBackground">#FF1F1F1F</color>
+    <color name="colorBackground">#55FF1F1F</color>
+    <color name="colorBackground2">#00000000</color>
     <color name="colorMessage">#C8FFFFFF</color>
     <color name="colorListener">#EAF2F8</color>
     <color name="colorListenerBackground">#CCFFFFFF</color>

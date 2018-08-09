@@ -6,12 +6,16 @@ import java.util.HashMap;
 public class GetMessageList {
 
     private static String[] types, subjects;
-    private static ArrayList<String> list;
-    private static HashMap<String, HashMap<String, HashMap<String, HashMap<String, String>>>> map;
+    private static ArrayList<ArrayList<String>> list;
+    private static HashMap<String, HashMap<String, HashMap<String, HashMap<String, HashMap<String, HashMap<String, String>>>>>> map;
 
-    static ArrayList<String> getList(String type, String subject){
+    static ArrayList<ArrayList<String>> getList(String type, String subject){
 
-        list = new ArrayList<>();
+        list = new ArrayList<>(2);
+
+        list.add(new ArrayList<String>());
+        list.add(new ArrayList<String>());
+
 
         if( map != null)
             solveByType(map,type,subject);
@@ -19,7 +23,7 @@ public class GetMessageList {
         return list;
     }
 
-    private static void solveByType(HashMap<String, HashMap<String, HashMap<String, HashMap<String, String>>>> map, String type, String subject) {
+    private static void solveByType(HashMap<String, HashMap<String, HashMap<String, HashMap<String, HashMap<String, HashMap<String, String>>>>>> map, String type, String subject) {
 
         if(type.equals("Tümü")){
 
@@ -32,7 +36,7 @@ public class GetMessageList {
     }
 
 
-    private static void solveBySubject(String type, HashMap<String, HashMap<String, HashMap<String, String>>> map, String subject) {
+    private static void solveBySubject(String type, HashMap<String, HashMap<String, HashMap<String, HashMap<String, HashMap<String, String>>>>> map, String subject) {
 
         if(subject.equals("Tümü")){
 
@@ -44,21 +48,31 @@ public class GetMessageList {
             addToList(type, subject, map.get(subject));
     }
 
-    private static void addToList(String type, String subject, HashMap<String, HashMap<String, String>> mapSubject){
+    private static void addToList(String type, String subject, HashMap<String, HashMap<String, HashMap<String, HashMap<String, String>>>> mapSubject){
 
-        for (HashMap<String, String> mapTemp : mapSubject.values()) {
+        for (HashMap<String, HashMap<String, HashMap<String, String>>> mapTemp2 : mapSubject.values()) {
 
-            String s = type + "\t\t / \t\t" + subject + "\n\n\n";
-            s += "\t\t\t\t";
-            s += mapTemp.get("Message") + "\n\n";
-            s += "\t\t\t\t\t\t\tLocal Date\t\t\t\t" + "\t\t\t\t\t\t\t\tDatabase Date\n\t\t\t\t";
-            s += mapTemp.get("Local Date") + "\t\t\t\t\t\t\t\t" + GetDate.getDate(true, String.valueOf(mapTemp.get("Server Timestamp")));
+            for (HashMap<String, HashMap<String, String>> mapTemp : mapTemp2.values()) {
 
-            list.add(s);
+                String s = "Ad: \t" + mapTemp.get("Id").get("Name") + "\n\n";
+                s += "Soyad: \t" + mapTemp.get("Id").get("Name2") + "\n\n";
+                s += "Kimlik No: \t" + mapTemp.get("Id").get("Id") + "\n\n";
+                s += "Gsm: \t" + mapTemp.get("Id").get("PhoneGsm") + "\n\n";
+                s += "Telefon: \t" + mapTemp.get("Id").get("Phone") + "\n\n";
+                s += "Email: \t" + mapTemp.get("Id").get("Mail");
+                list.get(0).add(s);
+
+                s = type + "\t\t / \t\t" + subject + "\n\n\n";
+                s += "\t\t\t\t";
+                s += mapTemp.get("Message").get("Message") + "\n\n";
+                s += "\t\t\t\t\t\t\tTime Local\t\t\t\t" + "\t\t\t\t\t\t\t\tTime Database\n\t\t\t\t";
+                s += mapTemp.get("Message").get("Time Local") + "\t\t\t\t\t\t\t\t" + GetDate.getDate(true, String.valueOf(mapTemp.get("Message").get("Time Database")));
+                list.get(1).add(s);
+            }
         }
     }
 
-    static void setMap(HashMap<String, HashMap<String, HashMap<String, HashMap<String, String>>>> map2){
+    static void setMap(HashMap<String, HashMap<String, HashMap<String, HashMap<String, HashMap<String, HashMap<String, String>>>>>> map2){
 
         map = map2;
     }
