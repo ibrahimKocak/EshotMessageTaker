@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorBackground">#55FF1F1F</color>
-    <color name="colorBackground2">#00000000</color>
-    <color name="colorMessage">#C8FFFFFF</color>
+    <color name="colorRedBlur">#FFFFFFFF</color>
+    <color name="colorRed">#AAF0E0E0</color>
+    <color name="colorGray">#FF888888</color>
+    <color name="colorWhite">#FFFFFFFF</color>
+    <color name="colorWhiteBlur75">#BBFFFFFF</color>
+    <color name="colorWhiteBlur50">#88FFFFFF</color>
+    <color name="colorWhiteBlur25">#44FFFFFF</color>
+    <color name="colorWhiteBlur12">#22FFFFFF</color>
+    <color name="colorWhiteGray">#FFF8F8F8</color>
+    <color name="colorTransparent">#00000000</color>
+    <color name="colorMessage">#FFFFFFFF</color>
     <color name="colorListener">#EAF2F8</color>
     <color name="colorListenerBackground">#CCFFFFFF</color>
     <color name="colorTemp">#FFFFFF</color>

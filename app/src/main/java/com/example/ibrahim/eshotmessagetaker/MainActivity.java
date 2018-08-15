@@ -41,10 +41,10 @@ public class MainActivity extends Activity {
     private DatabaseReference ref;
     private ValueEventListener listenerDb;
     private ArrayAdapter<String> adapterList;
-    private AdapterView.OnItemSelectedListener listenerSpinners, listenerSpinnerDateDay, listenerSpinnerDateMonth, listenerSpinnerDateYear;
+    private AdapterView.OnItemSelectedListener listenerSpinners, listenerSpinnerDateDay, listenerSpinnerDateMonth, listenerSpinnerDateYear,listenerSpinnerDateDay2, listenerSpinnerDateMonth2, listenerSpinnerDateYear2;
     private AdapterView.OnItemClickListener listenerListview;
     private HashMap<String, HashMap<String, HashMap<String, HashMap<String, HashMap<String, HashMap<String, String >>>>>>  map;
-    private Spinner spinnerDateDay, spinnerDateMonth, spinnerDateYear, spinnerType,spinnerSubject;
+    private Spinner spinnerDateDay, spinnerDateMonth, spinnerDateYear,spinnerDateDay2, spinnerDateMonth2, spinnerDateYear2, spinnerType,spinnerSubject;
     private ListView listView;
     private ArrayList<ArrayList<String>> list;
 
@@ -56,6 +56,12 @@ public class MainActivity extends Activity {
         spinnerDateDay = findViewById(R.id.spinnerDateDay);
         spinnerDateMonth = findViewById(R.id.spinnerDateMonth);
         spinnerDateYear = findViewById(R.id.spinnerDateYear);
+        spinnerDateDay2 = findViewById(R.id.spinnerDateDay2);
+        spinnerDateMonth2 = findViewById(R.id.spinnerDateMonth2);
+        spinnerDateYear2 = findViewById(R.id.spinnerDateYear2);
+        spinnerDateDay2.setEnabled(false);
+        spinnerDateMonth2.setEnabled(false);
+        spinnerDateYear2.setEnabled(false);
         spinnerType = findViewById(R.id.spinnerType);
         spinnerSubject = findViewById(R.id.spinnerSubject);
         listView = findViewById(R.id.lvMsg);
@@ -75,6 +81,7 @@ public class MainActivity extends Activity {
 
         mySpinnerAdapters = new MySpinnerAdapters(MainActivity.this);
         spinnerDateYear.setAdapter(mySpinnerAdapters.getAdapterDateYear());
+        spinnerDateYear2.setAdapter(mySpinnerAdapters.getAdapterDateYear());
         spinnerType.setAdapter(mySpinnerAdapters.getAdapterType());
         spinnerSubject.setAdapter(mySpinnerAdapters.getAdapterSubject());
     }
@@ -84,6 +91,9 @@ public class MainActivity extends Activity {
         spinnerDateDay.setOnItemSelectedListener(listenerSpinnerDateDay);
         spinnerDateMonth.setOnItemSelectedListener(listenerSpinnerDateMonth);
         spinnerDateYear.setOnItemSelectedListener(listenerSpinnerDateYear);
+        spinnerDateDay2.setOnItemSelectedListener(listenerSpinnerDateDay2);
+        spinnerDateMonth2.setOnItemSelectedListener(listenerSpinnerDateMonth2);
+        spinnerDateYear2.setOnItemSelectedListener(listenerSpinnerDateYear2);
         spinnerType.setOnItemSelectedListener(listenerSpinners);
         spinnerSubject.setOnItemSelectedListener(listenerSpinners);
         listView.setOnItemClickListener(listenerListview);
@@ -130,6 +140,69 @@ public class MainActivity extends Activity {
 
                 mySpinnerAdapters.setYears(Integer.valueOf(spinnerDateYear.getSelectedItem().toString()));
                 spinnerDateMonth.setAdapter(mySpinnerAdapters.getAdapterDateMonth());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        };
+
+        listenerSpinnerDateDay2 = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                connection();
+
+                int[] date1 = new int[3];
+                int[] date2 = new int[3];
+
+                date1[0] = Integer.valueOf(spinnerDateDay.getSelectedItem().toString());
+                date1[1] = Integer.valueOf(spinnerDateMonth.getSelectedItem().toString());
+                date1[2] = Integer.valueOf(spinnerDateYear.getSelectedItem().toString());
+
+                date2[0] = Integer.valueOf(spinnerDateDay2.getSelectedItem().toString());
+                date2[1] = Integer.valueOf(spinnerDateMonth2.getSelectedItem().toString());
+                date2[2] = Integer.valueOf(spinnerDateYear2.getSelectedItem().toString());
+
+                ArrayList<String> listDate = new ArrayList<>();
+                String s = "";
+
+                String date = spinnerDateYear.getSelectedItem().toString() + "-" + spinnerDateMonth.getSelectedItem().toString() + "-" + spinnerDateDay.getSelectedItem().toString();
+
+                if(ref != null)
+                    ref.removeEventListener(listenerDb);
+
+                ref = messages.child(date);
+                ref.addValueEventListener(listenerDb);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        };
+
+        listenerSpinnerDateMonth2 = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                mySpinnerAdapters.setMonths(Integer.valueOf(spinnerDateMonth.getSelectedItem().toString()));
+                spinnerDateDay2.setAdapter(mySpinnerAdapters.getAdapterDateDay());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        };
+
+        listenerSpinnerDateYear2 = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                mySpinnerAdapters.setYears(Integer.valueOf(spinnerDateYear.getSelectedItem().toString()));
+                spinnerDateMonth2.setAdapter(mySpinnerAdapters.getAdapterDateMonth());
             }
 
             @Override

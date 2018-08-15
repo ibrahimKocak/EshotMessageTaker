@@ -6,5 +6,5 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textSize="14sp"
-    android:background="@color/colorMessage"
-    tools:ignore="SmallSp" />
+    android:background="@color/colorWhiteBlur75"
+    tools:ignore="SmallSp"/>
