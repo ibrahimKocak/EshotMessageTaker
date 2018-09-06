@@ -32,7 +32,6 @@ public class MySpinnerAdapters {
     }
 
     //Set Methots
-
     //Arrays
     public void setYears(int yearMax) {
 

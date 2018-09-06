@@ -250,12 +250,17 @@ public class MainActivity extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                map = (HashMap<String, HashMap<String,HashMap<String,HashMap<String,HashMap<String,HashMap<String,String>>>>>>) dataSnapshot.getValue();
+                map = (HashMap<String, HashMap<String,
+                        HashMap<String,HashMap<String,
+                                HashMap<String,HashMap<String,String>>>>>>) dataSnapshot.getValue();
 
                 if(map != null) {
 
                     GetMessageList.setMap(map);
-                    list = GetMessageList.getList(spinnerType.getSelectedItem().toString(), spinnerSubject.getSelectedItem().toString());
+
+                    list = GetMessageList.getList(spinnerType.getSelectedItem().toString(),
+                            spinnerSubject.getSelectedItem().toString());
+
                     adapterList = new ArrayAdapter<>(MainActivity.this, R.layout.mytextview, list.get(1));
                     listView.setAdapter(adapterList);
                 }
